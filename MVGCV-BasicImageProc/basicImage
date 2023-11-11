@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>MVGCV1</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      word-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<section id="models-vs-reality" class="frame">
+<h3>Models Vs Reality</h3>
+</section>
+<section id="introduction" class="frame">
+<h3>Introduction</h3>
+<p>Why Image Processing? Is this not a Computer Vision module?<br />
+While image processing is a large field in its own right it is generally considered to be a task that changes an image in some way for the sake of the human viewer.<br />
+However, in many cases it is also the first stage of computer vision applications.<br />
+It is generally thought of as a pre-processing step which modifies the image in such a way as to make it more suitable for computer analysis.</p>
+</section>
+<div class="frame">
+<h3 id="point-operators-or-point-processes">Point operators or point processes</h3>
+<h2 id="section"></h2>
+<p>The simplest of image processing operators are the point operators. These are operators that manipulate or change each pixel in an image independently of the pixels around it (referred to as neighbours). Examples:<br />
+</p>
+<ul>
+<li><p>Brightness adjustment.<br />
+</p></li>
+<li><p>Contrast adjustment.<br />
+</p></li>
+<li><p>Colour correction.<br />
+</p></li>
+<li><p>Colour transforms.</p></li>
+</ul>
+</div>
+<section id="operator" class="frame">
+<h3>Operator</h3>
+<p>An operator in image processing is a function which takes a pixel value and produces a new pixel value.<br />
+<span class="math display"><em>g</em>(<em>x⃗</em>) = <em>h</em>(<em>f</em>(<em>x⃗</em>))</span></p>
+<p>Usually for an image (in the continuous domain),<br />
+<span class="math inline"><em>x⃗</em> ∈ ℝ<sup>2</sup></span> if it is a grey scale image<br />
+and <span class="math inline"><em>x⃗</em> ∈ ℝ<sup>3</sup></span> for a colour image.</p>
+</section>
+<section id="operator-1" class="frame">
+<h3>Operator</h3>
+<p>When we deal with digital images we move from <span class="math inline">ℝ → ℤ</span>.<br />
+This means that digital images are discrete(sampled) images, and each pixel has a location in a 2D plane. <span class="math inline"><em>x⃗</em> = (<em>i</em>, <em>j</em>)<sup>⊤</sup></span><br />
+and therefore <span class="math inline"><em>g</em>(<em>i</em>, <em>j</em>) = <em>h</em>(<em>f</em>(<em>i</em>, <em>j</em>))</span>.<br />
+<span class="math inline"><em>f</em></span> and <span class="math inline"><em>g</em></span> are images, and <span class="math inline"><em>h</em></span> is the pixel transformation from <span class="math inline"><em>f</em> → <em>g</em></span>.</p>
+</section>
+<section id="transformations" class="frame">
+<h3>Transformations</h3>
+<p>Let’s look at an example transformation. <span class="math display"><em>g</em>(<em>x⃗</em>) = <em>a</em><em>f</em>(<em>x⃗</em>) + <em>b</em></span></p>
+<p>What will this do?</p>
+</section>
+<section id="transformations-1" class="frame">
+<h3>Transformations</h3>
+<p><span class="math inline"><em>a</em><em>f</em>(<em>x⃗</em>)</span> will multiply each pixel brightness value by <span class="math inline"><em>a</em></span>.<br />
+While <span class="math inline"> + <em>b</em></span> simply adds a constant brightness value <span class="math inline"><em>b</em></span> to each pixel.<br />
+<span class="math inline"><em>a</em></span> would often be called gain and <span class="math inline"><em>b</em></span> bias.<br />
+You may also notice that this is the equation of a line with y-intersect <span class="math inline"><em>b</em></span> and slope <span class="math inline"><em>a</em></span>.<br />
+So you could graph this function against the input pixel brightness range to see what value of the output pixel brightness value will be.</p>
+</section>
+<section id="gvecx-afvecx-b" class="frame">
+<h3><span class="math inline"><em>g</em>(<em>x⃗</em>) = <em>a</em><em>f</em>(<em>x⃗</em>) + <em>b</em></span></h3>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/CAV15LowContrast.jpg" alt="image" /></td>
+<td style="text-align: center;"><img src="images/histoLowContrast.png" alt="image" /></td>
+<td style="text-align: center;"><img src="images/AffineContrast.png" alt="image" /></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><img src="images/CAV15Affine20-180.jpg" alt="image" /></td>
+<td style="text-align: center;"><img src="images/histoAffine20-180t.png" alt="image" /></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<p><br />
+</p>
+</section>
+<section id="saturation" class="frame">
+<h3>Saturation</h3>
+<p>A word of warning though.<br />
+Digital images have a minimum and maximum brightness.<br />
+The above may be a linear function (strictly speaking Affine function) but once the output reaches the maximum value allowed in the digital image then it cannot go any brighter.<br />
+This is important for two reasons.<br />
+Firstly, we lose any information that hits this maximum value, so later computer vision algorithms may not be able to do anything with it. Secondly, the operation becomes irreversible.<br />
+If you have stayed within the range this operation can be reversed by <span class="math display">$$f(\vec{x}) = \frac{g(\vec{x}) - b}{a}$$</span><br />
+note the order of operations, the subtract must take place first, and then the division.</p>
+</section>
+<section id="reversible" class="frame">
+<h3>Reversible?</h3>
+<p>Also note that in a digital image, operations are rarely perfectly reversible even if the maths says they should be.<br />
+We regularly end up with floating point values that must be re-quatized to discrete values.<br />
+The same will happen during the reverse operation but it cannot undo the original re-quantization instead it will just add its own.<br />
+Therefore repeated operations will cumulatively add quantization noise.<br />
+This is something to always keep in mind when performing image processing calculations.<br />
+<strong>Pro-Tip:</strong> If possible, do all image processing operations without converting to discrete values in between.</p>
+</section>
+<section id="section-1" class="frame">
+<h3></h3>
+<p>Consider the following function: <span class="math display"><em>g</em>(<em>x⃗</em>) = <em>a</em>(<em>x⃗</em>)<em>f</em>(<em>x⃗</em>) + <em>b</em>(<em>x⃗</em>)</span></p>
+<p>Now both <span class="math inline"><em>a</em></span> and <span class="math inline"><em>b</em></span> are functions of <span class="math inline"><em>x⃗</em></span> instead of just constant values, which means that their value varies depending on position.<br />
+What are the functions <span class="math inline"><em>a</em>()</span> and <span class="math inline"><em>b</em>()</span>?<br />
+Well they are not defined here, so they could be anything.<br />
+Consider a graduated filter.</p>
+</section>
+<section id="graduated-filter" class="frame">
+<h3>Graduated Filter</h3>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/DSC_0636.jpg" alt="image" /></td>
+<td style="text-align: center;"><img src="images/GraduatedFilter.jpg" alt="image" /></td>
+<td style="text-align: center;"><img src="images/DSC_0636-2.jpg" alt="image" /></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="operations-combining-two-images." class="frame">
+<h3>Operations combining two images.</h3>
+<p>Consider the following function. <span class="math display"><em>g</em>(<em>x⃗</em>) = (1 − <em>α</em>)<em>f</em><sub>0</sub>(<em>x⃗</em>) + <em>α</em><em>f</em><sub>1</sub>(<em>x⃗</em>)</span></p>
+<p>This will blend two images into one, taking <span class="math inline"><em>α</em></span> times the brightness of image <span class="math inline"><em>f</em><sub>1</sub></span> and <span class="math inline">(1 − <em>α</em>)</span> times the brightness of image <span class="math inline"><em>f</em><sub>0</sub></span>.<br />
+<span class="math inline"><em>α</em></span> is in the range <span class="math inline">[0, 1]</span><br />
+And of course <span class="math inline"><em>α</em></span> could be a function of <span class="math inline"><em>x⃗</em></span> so we would blend differently at different positions in the image.<br />
+</p>
+</section>
+<section id="non-linear-point-operations" class="frame">
+<h3>Non-linear Point operations</h3>
+<p>Let’s look at a non-linear point operation. <span class="math display"><em>g</em>(<em>x⃗</em>) = [<em>f</em>(<em>x⃗</em>)]<sup><em>γ</em></sup></span> <span class="math inline"><em>f</em>(<em>x⃗</em>) ∈ [0, 1]</span><br />
+This operation is usually referred to as gamma correction.<br />
+Which suggests that it is correcting for something.<br />
+In most camera systems the mapping from input radiance to quantized pixel values is a non-linear one.<br />
+Gamma correction can be applied later to undo this.<br />
+A <span class="math inline"><em>γ</em> = 2.2</span> will suit well for most digital cameras.<br />
+Screens and monitors also undergo some gamma correction and you can usually play with this in the settings of the monitor.</p>
+</section>
+<section id="colour-transforms" class="frame">
+<h3> Colour Transforms</h3>
+<p>Consider an RGB (Red, Green, Blue) image.<br />
+We could consider these to be three separate gray scale images <span class="math inline"><em>r</em>(<em>x⃗</em>)</span>, <span class="math inline"><em>g</em>(<em>x⃗</em>)</span> and <span class="math inline"><em>b</em>(<em>x⃗</em>)</span>.<br />
+If we decide to brighten each of these individually by the same amount and then recombine them, we may get a nasty surprise.<br />
+As well as brightening we may get quite a bit of colour drift.<br />
+Colours may change in an unnatural way.<br />
+E.g. Skin tones may appear unnatural.<br />
+</p>
+</section>
+<section id="colour-transforms-1" class="frame">
+<h3> Colour Transforms</h3>
+<p>The problem we have encountered is that colour channels are highly correlated with each-other, so treating them independently can have poor consequences.<br />
+The better option here would be to try to separate brightness from colour. e.g. YUV, YIQ or CIE-L*a*b*. which single out the brightness value as Y or L respectively.<br />
+We would then only apply the brightness change to the brightness/luminance channel and then reconvert to RGB giving a better result.<br />
+Note of Caution: some libraries use BGR, so if you notice the colour looks odd then this should be your first place that you look for a solution.</p>
+</section>
+<section id="section-2" class="frame">
+<h3></h3>
+<p>We may of course want to change the colours of an image.<br />
+Most often in pre-processing this would take the form of colour balance corrections.<br />
+A problem exists that different light sources have a different colours.<br />
+Sunlight is quite blue in tone.<br />
+Fluorescent, LED, camera flash, tungsten all have different colours.<br />
+Many digital cameras allow you to set this in camera or the camera will try to guess.<br />
+</p>
+</section>
+<section id="section-3" class="frame">
+<h3></h3>
+<p>In many cases there are competing light sources in an image and a single correction is not globally effective.<br />
+In these cases we would like uniform gray parts of the image to be gray and white parts to be white.<br />
+There are many algorithms for doing this from individually modifying each of the channels separately to converting to a colour space that separates out colour and then making global changes that move gray parts of the image to values in that space that have zero colour.<br />
+Every other pixel moves in the same direction.<br />
+Then convert back to RGB.</p>
+</section>
+<section id="colour-conversions" class="frame">
+<h3>Colour Conversions</h3>
+<p>If you want to convert from Colour to YIQ<br />
+Let’s assume we have the following values RGB values<br />
+R = 126, G=120, B=200<br />
+The Matrix <span class="math inline"><em>C</em></span> is a linear transformation from RGB to YIQ.<br />
+</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">   <span class="math display">$$C = \begin{bmatrix*}[r]
+                0.299       &amp; 0.587  &amp; 0.114 \\
+                0.596       &amp; -0.274  &amp; -0.322  \\
+                0.211        &amp; -0.523   &amp; 0.312  
+            \end{bmatrix*}$$</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">with RGB values of</td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<p><br />
+</p>
+</section>
+<section id="colour-conversions-1" class="frame">
+<h3>Colour Conversions</h3>
+<p><span class="math display"><em>C</em><em>p⃗</em><sub><em>r</em><em>g</em><em>b</em></sub> = <em>p⃗</em><sub><em>y</em><em>i</em><em>q</em></sub></span></p>
+<p><span class="math display">$$\vec{p}_{yiq} = \begin{bmatrix*}[r]
+                0.299       &amp; 0.587  &amp; 0.114 \\
+                0.596       &amp; -0.274  &amp; -0.322  \\
+                0.211        &amp; -0.523   &amp; 0.312  
+            \end{bmatrix*}
+            \begin{bmatrix*}[r]
+            126       \\
+            120        \\
+            200         
+            \end{bmatrix*} = 
+            \begin{bmatrix*}[r]
+            131       \\
+            -22        \\
+            26         
+            \end{bmatrix*}$$</span></p>
+</section>
+<section id="compositing-and-matting" class="frame">
+<h3>Compositing and Matting</h3>
+<p>Matting refers to extracting an object from an image.<br />
+Compositing refers to inserting this object into another image without noticeable artefacts (i.e. it should not be obvious that it was not part of the original image).<br />
+Blue/Green screens are often used to make this process easier.<br />
+Some terms to be familiar with here are foreground, background and <span class="math inline"><em>α</em></span> (alpha).<br />
+Usually we talk about the foreground as being the object that is matted from the background of one image and composited into the background of another image.</p>
+</section>
+<section id="compositing-and-matting-1" class="frame">
+<h3>Compositing and Matting</h3>
+<p><span class="math inline"><em>α</em></span> is a fourth channel that is added to our three-channel image (e.g. RGB). <span class="math inline"><em>α</em> ∈ [0, 1]</span> is the transparency/opacity at each pixel.<br />
+So in an <span class="math inline"><em>α</em></span>-matted image a pixel that is definitely in the foreground object we want to take has an <span class="math inline"><em>α</em> = 1</span> (fully opaque).<br />
+Pixels that are definitely outside the object, i.e. background have <span class="math inline"><em>α</em> = 0</span> (fully transparent).<br />
+When the boundary of the foreground object with background is not distinct (e.g. a hair that is thinner than a pixel) then <span class="math inline"><em>α</em></span> is between 0 and 1.<br />
+</p>
+</section>
+<section id="compositing-and-matting-2" class="frame">
+<h3>Compositing and Matting</h3>
+<p>Then to composite the object onto a new background image we use the following equation, called the over-operator. <span class="math display"><em>C</em> = (1 − <em>α</em>)<em>B</em> + <em>α</em><em>F</em>.</span></p>
+<p>Where B is background and F is foreground.<br />
+Depending on the application we sometimes pre-multiply <span class="math inline"><em>α</em><em>F</em></span> and store in the <span class="math inline"><em>α</em></span>-matted image.<br />
+In other cases this is left until later.<br />
+There are other functions other than the over-operator <a href="#over-operator" data-reference-type="eqref" data-reference="over-operator">[over-operator]</a>.<br />
+But this will suffice for now.</p>
+</section>
+<section id="contrast-stretching." class="frame">
+<h3>Contrast Stretching.</h3>
+<p>The brightness and gain mentioned earlier are useful but require human judgement. In Computer Vision we must always consider if values can be automatically determined by some mechanism.</p>
+<p>Contrast stretch is one option here. It aims to make the most use of the dynamic range available. e.g. in an 8-bit image <span class="math inline">[0, 255] → [<em>v</em><sub><em>m</em><em>i</em><em>n</em></sub>, <em>v</em><sub><em>m</em><em>a</em><em>x</em></sub>]</span>. Find the darkest pixel in the image, <span class="math inline"><em>u</em><sub><em>m</em><em>i</em><em>n</em></sub></span>. Find the brightest pixel called <span class="math inline"><em>u</em><sub><em>m</em><em>a</em><em>x</em></sub></span>. Now change <span class="math inline"><em>u</em><sub><em>m</em><em>i</em><em>n</em></sub></span> to match <span class="math inline"><em>v</em><sub><em>m</em><em>i</em><em>n</em></sub></span> and <span class="math inline"><em>u</em><sub><em>m</em><em>a</em><em>x</em></sub></span> to match <span class="math inline"><em>v</em><sub><em>m</em><em>a</em><em>x</em></sub></span> and stretch every other pixel linearly between those two points.</p>
+<p><span class="math display">$$T(u) = 
+            \begin{cases}
+            v_{min} &amp; \text{if } u&lt;u_{min}\\
+            v_{min}+\frac{(v_{max} - v_{min})(u-u_{min})}{u_{max}-u_{min}} &amp; \text{if } u_{min}&lt;u&lt;u_{max}\\
+            v_{max} &amp; \text{if } u&gt;u_{max}
+            \end{cases}$$</span></p>
+</section>
+<section id="histogram-equalisation." class="frame">
+<h3>Histogram Equalisation.</h3>
+<p>We can take this idea to its logical extreme. I.e. that we should have the same number of pixels of each brightness value and that the resulting image should have a histogram that is flat from <span class="math inline"><em>v</em><sub><em>m</em><em>i</em><em>n</em></sub></span> to <span class="math inline"><em>v</em><sub><em>m</em><em>a</em><em>x</em></sub></span>. To calculate how to do this we need to start with the histogram of the original image which we will call <span class="math inline"><em>h</em>(<em>i</em>)</span> where <span class="math inline"><em>i</em></span> is the brightness value. We can then borrow a common function from statistics, the cumulative distribution <span class="math inline"><em>c</em>(<em>I</em>)</span></p>
+</section>
+<section id="cumulative-distribution" class="frame">
+<h3>Cumulative Distribution</h3>
+<p><span class="math display">$$c(I) = \frac{1}{N}\sum_{i=0}^I h(i) = c(I-1)+\frac{1}{N}h(I),$$</span> N is the number of pixels in the image. For a given brightness value <span class="math inline"><em>i</em></span> we can look up its corresponding percentile <span class="math inline"><em>c</em>(<em>I</em>)</span> and from this determine the final value the pixel should take. Both <span class="math inline"><em>I</em>, <em>c</em> ∈ [0, 255]</span> for an 8-bit image. i.e. if <span class="math inline"><em>M</em> = 256</span> <span class="math display">$$c(I) = \frac{M}{N}\sum_{i=0}^I h(i) = c(I-1)+\frac{M}{N}h(I),$$</span> Note that the result will be real numbers <span class="math inline"> ∈ [0, <em>M</em> − 1]</span> and will have to be requantized to integers <span class="math inline"> ∈ [0, <em>M</em> − 1]</span> and this will lead to some roughness in the final histogram.</p>
+</section>
+<section id="histogram-equalisation" class="frame">
+<h3>Histogram Equalisation</h3>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/CAV15LowContrast.jpg" alt="image" /></td>
+<td style="text-align: center;"><img src="images/histoLowContrast.png" alt="image" /></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><img src="images/CAV15Equalised.jpg" alt="image" /></td>
+<td style="text-align: center;"><img src="images/histoEqualised.png" alt="image" /></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<p><br />
+</p>
+</section>
+<section id="linear-filtering" class="frame">
+<h3>Linear Filtering</h3>
+<p>The logical progression from point operators is to use multiple pixels to produce the “processed" output pixel.<br />
+This normally takes the form of using a neighbourhood of pixels to produce the output pixel.<br />
+<span class="math inline"><em>n</em> × <em>n</em></span> where <span class="math inline"><em>n</em></span> is an odd number are the normal shape of these, i.e. symmetrical around the pixel with <span class="math inline">3 × 3</span> being the smallest possible (<span class="math inline">1 × 1</span> is just a point operator).</p>
+</section>
+<section id="linear-filtering-1" class="frame">
+<h3>Linear Filtering</h3>
+<p>As the name suggests, these are linear operations which means that the order in which they occur doesn’t matter and they obey all the other rules of linearity such as homogeneity and additivity.<br />
+Once again this is only in the pure mathematical sense.<br />
+We break linearity if the result at any point drops outside the range of our min/max values.<br />
+And when our pixel is an edge pixel we get non-linear effects so it works differently than a pixel that is in the internal of the image.<br />
+Note that for an <span class="math inline"><em>n</em> × <em>n</em></span> operator, an edge pixel is any pixel within <span class="math inline">(<em>n</em> − 1)/2</span> of the edge and every pixel closer to the edge the further from the linear operation we get.</p>
+</section>
+<section id="correlation-operator." class="frame">
+<h3>Correlation operator.</h3>
+<p><span class="math display"><em>g</em>(<em>i</em>, <em>j</em>) = ∑<sub><em>k</em>, <em>l</em></sub><em>f</em>(<em>i</em> + <em>k</em>, <em>j</em> + <em>l</em>)<em>h</em>(<em>k</em>, <em>l</em>)</span></p>
+<p><span class="math display"><em>g</em> = <em>f</em> ⊗ <em>h</em></span> With <span class="math inline"><em>h</em>(<em>k</em>, <em>l</em>)</span> being the filter coefficients.<br />
+</p>
+</section>
+<section id="convolution-operator." class="frame">
+<h3> Convolution operator.</h3>
+<p><span class="math display"><em>g</em>(<em>i</em>, <em>j</em>) = ∑<sub><em>k</em>, <em>l</em></sub><em>f</em>(<em>i</em>, <em>j</em>)<em>h</em>(<em>i</em> − <em>k</em>, <em>j</em> − <em>l</em>)</span></p>
+<p><span class="math display"><em>g</em> = <em>f</em> * <em>h</em></span> With <span class="math inline"><em>h</em>(<em>k</em>, <em>l</em>)</span> being the filter coefficients.<br />
+</p>
+</section>
+<section id="point-spread-function-psf" class="frame">
+<h3>Point Spread Function (PSF)</h3>
+<p>If you’ve taken a class in DSP you can think of <span class="math inline"><em>h</em>(<em>k</em>, <em>l</em>)</span> as a two-dimensional impulse response.<br />
+In image processing this is more commonly called a PSF (Point Spread Function).<br />
+Convolution/correlation, in addition to being a linear operator is also shift invariant (subject to the usual assumptions which we will no longer continue to state but should always be aware of).<br />
+Think of this as the operator behaves the same no matter where it is in the image.</p>
+</section>
+<section id="border-effects" class="frame">
+<h3>Border Effects</h3>
+<p>What should we do with the situation where the filter goes off the edge of the image?<br />
+There are many solutions, none of which are right or wrong, just different ways of dealing with a problematic situation.<br />
+</p>
+</section>
+<section id="border-solutions" class="frame">
+<h3>Border Solutions</h3>
+<p>We could pad the image with zeros on the edges. The number of border pixels we would need to add is <span class="math inline">(<em>n</em> − 1)/2</span>.<br />
+Or set all those pixels to some value other than zero.<br />
+Clamp: just duplicate the nearest edge pixel, making up a border that way.<br />
+Cyclic: Wrap, repeat or tile: loop around the image. i.e. if you go off the top you come back on at the bottom, same left for right.<br />
+Like computer games in the 70/80s.<br />
+Mirror: reflect pixel values across the edge.<br />
+Extend: extend the signal by subtracting the mirrored version of the signal from the edge pixel value.</p>
+</section>
+<section id="linear-filter-examplesblurring" class="frame">
+<h3>Linear Filter Examples:Blurring</h3>
+<p>Why would we want to blur an image?<br />
+Well one common reason is to reduce noise in an image.<br />
+As the noise changes from one pixel position to another then if we average over several pixels it will reduce the noise.<br />
+It has an obvious problem however, edges in the image will also be blurred.<br />
+So this is a compromise but some types of averaging are better than others.<br />
+Let’s look at a poor one first. A box filter.<br />
+</p>
+</section>
+<section id="box-filter" class="frame">
+<h3>Box Filter</h3>
+<p>This can also be shown as     <span class="math inline">1/9</span><br />
+</p>
+<p>This is averaging at its most basic.<br />
+Take the current pixel and the eight surrounding neighbours, add up the sum of these pixels and divide by nine (as there are nine pixels altogether).</p>
+</section>
+<section id="weighted-average" class="frame">
+<h3>Weighted Average</h3>
+<p>This next one gives the higher priority to the centre pixel and less to the others.<br />
+<span class="math inline">1/10</span><br />
+And there are lots of configurations of these.<br />
+This one is called the bilinear. <span class="math inline">1/16</span><br />
+</p>
+</section>
+<section id="gaussian" class="frame">
+<h3>Gaussian</h3>
+<p>Then there is the approximation of a Gaussian, which isn’t much use as a <span class="math inline">3 × 3</span> but this <span class="math inline">5 × 5</span> is quite useful.<br />
+<span class="math inline">1/256</span><br />
+</p>
+</section>
+<section id="horizontal-and-vertical-sobel" class="frame">
+<h3>Horizontal and Vertical Sobel</h3>
+<div class="TAB">
+<p>(e,1cm,1cm)<span>:c:c:c:</span><span>:c:c:c:</span> <span class="math inline"> − 1</span> &amp; <span class="math inline"> − 2</span> &amp; <span class="math inline"> − 1</span><br />
+<span class="math inline">0</span> &amp; <span class="math inline">0</span> &amp; <span class="math inline">0</span><br />
+<span class="math inline">1</span> &amp; <span class="math inline">2</span> &amp; <span class="math inline">1</span><br />
+</p>
+</div>
+<p>        </p>
+<div class="TAB">
+<p>(e,1cm,1cm)<span>:c:c:c:</span><span>:c:c:c:</span> <span class="math inline"> − 1</span> &amp; <span class="math inline">0</span> &amp; <span class="math inline">1</span><br />
+<span class="math inline"> − 2</span> &amp; <span class="math inline">0</span> &amp; <span class="math inline">2</span><br />
+<span class="math inline"> − 1</span> &amp; <span class="math inline">0</span> &amp; <span class="math inline">1</span></p>
+</div>
+<p><br />
+</p>
+</section>
+<section id="laplacian" class="frame">
+<h3>Laplacian</h3>
+<p>There are many different approximations of the laplacian, this is just one common one. It is trying to achieve the partial second derivatives in the x and y directions:<br />
+<span class="math display">$$\nabla^2B\equiv\frac{\partial^2B}{\partial x^2}+\frac{\partial^2B}{\partial y^2}$$</span><br />
+</p>
+</section>
+<section id="non-linear-neighbour-operators" class="frame">
+<h3>Non-linear neighbour operators</h3>
+<p>Not all noise has a gaussian or uniform distribution.<br />
+Shot noise for example, is noise where there are occasionally very large values.<br />
+By very large we mean well outside the range of the standard deviation of gaussian noise.<br />
+Regular blurring with a gaussian filter will make a change here but the one large pixel value will cause problems as it will overpower values close by.<br />
+Rather than being removed it widens them and does bring them down in value but they are still visible.</p>
+</section>
+<section id="non-linear-neighbour-operators-1" class="frame">
+<h3>Non-linear neighbour operators</h3>
+<p>Rather than use the mean of the set of pixels withing the receptive field of the filter we should instead get the median.<br />
+This can be slow to compute although algorithms exist to mitigate this somewhat.<br />
+For shot noise it works well but it is not efficient at averaging away Gaussian noise.<br />
+To combine the two a filter called the <span class="math inline"><em>α</em></span>-trimmed mean can be used.<br />
+This does a mean on all pixels that apart from some fraction <span class="math inline"><em>α</em></span> of the smallest and largest.</p>
+</section>
+<section id="the-bilateral-filter" class="frame">
+<h3>The Bilateral Filter </h3>
+<p>None of the above filters deal well with the situation of an edge in the image that is legitimately part of the signal.<br />
+What occurs is that such edges are smoothed by the pixels close to them and we get the average along the edge rather than a sharp discontinuity.<br />
+The Bilateral Filter is a little like the <span class="math inline"><em>α</em></span>-trimmed mean, but in this case they reject pixels, whose intensity differs too much from the central pixel.<br />
+So we smooth/average pixels that are close in value to the central pixel and by close we mean with some standard deviation of the pixel intensity.</p>
+</section>
+<section id="the-bilateral-filter-function" class="frame">
+<h3>The Bilateral Filter Function</h3>
+<p><span class="math display">$$g(i,j) = \frac{\sum_{k,l}f(k,l)w(i,j,k,l)}{\sum_{k,l}w(i,j,k,l)}$$</span> The weighting coefficient <span class="math inline"><em>w</em>(<em>i</em>, <em>j</em>, <em>k</em>, <em>l</em>)</span> is complex and needs to be broken down in to constituent parts. It’s the product of a domain kernel <span class="math display">$$d(i,j,k,l)=exp\left(-\frac{(i-k)^2+(j-l)^2)}{2\sigma^2_d}\right)$$</span> and a range-kernel. <span class="math display">$$r(i,j,k,l)=exp\left(-\frac{||f(i,j)-f(k,l)||^2}{2\sigma^2_r}\right)$$</span></p>
+</section>
+<section id="the-bilateral-filter-function-1" class="frame">
+<h3>The Bilateral Filter Function</h3>
+<p>When multiplied together, these yield the data-dependent bilateral weight function. <span class="math display">$$w(i,j,k,l)=exp\left(-\frac{(i-k)^2+(j-l)^2)}{2\sigma^2_d}-\frac{||f(i,j)-f(k,l)||^2}{2\sigma^2_r}\right)$$</span></p>
+</section>
+<h1 id="geometric-transformations">Geometric Transformations</h1>
+<p>So far, all we have done is to make changes to the range of an image. i.e. We change the intensity values of the image. But we can also move pixels from one place to another.<br />
+Some general examples:</p>
+<ul>
+<li><p>Rotation</p></li>
+<li><p>Warping</p></li>
+<li><p>Enlarge/Reduce</p></li>
+</ul>
+<p>Mathematical Characterisation:</p>
+<ul>
+<li><p>Translation <span class="math inline">→</span> preserves orientation, length, angles, parallelism, straight lines.</p></li>
+<li><p>Rigid (Euclidean)<span class="math inline">→</span> preserves length, angles, parallelism, straight lines.</p></li>
+<li><p>Similarity <span class="math inline">→</span> preserves angles, parallelism, straight lines.</p></li>
+<li><p>Affine <span class="math inline">→</span> preserves parallelism, straight lines.</p></li>
+<li><p>Projective <span class="math inline">→</span> preserves straight lines</p></li>
+</ul>
+<h2 id="translation">Translation</h2>
+<p>The matrix for this is</p>
+<p>   <span class="math display">$$\begin{bmatrix*}[r]
+                1      &amp; 0  &amp; t_x \\
+                0       &amp; 1  &amp; t_y  \\
+                0        &amp; 0   &amp; 1  
+            \end{bmatrix*}$$</span></p>
+<p>or</p>
+<p>   <span class="math display">$$\begin{bmatrix*}[r]
+                I&amp; t \\
+                \textbf{0}^T       &amp; 1 
+            \end{bmatrix*}$$</span></p>
+<p>or</p>
+<p><span class="math display">$$[ \ \textbf{\textit{I}} \ | \ \textbf{\textit{t}} \ ]_{2\times3}$$</span></p>
+<p>Example: take the pixel at position <span class="math inline">(2, 3)</span> and translate it 5 pixels on the x-axis and 4 pixels on the y-axis.</p>
+<p>   <span class="math display">$$\begin{bmatrix*}[r]
+                1      &amp; 0  &amp; 5 \\
+                0       &amp; 1  &amp; 4  \\
+                0        &amp; 0   &amp; 1  
+            \end{bmatrix*} 
+            \begin{bmatrix*}[r]
+                2\\
+                3  \\
+                1   
+            \end{bmatrix*} 
+            = \begin{bmatrix*}[r]
+                7\\
+                7  \\
+                1   
+            \end{bmatrix*}$$</span></p>
+<h2 id="rigid">Rigid</h2>
+<p>The matrix for this is</p>
+<p>   <span class="math display">$$\begin{bmatrix*}[r]
+                \cos\theta      &amp; -\sin\theta  &amp; t_x \\
+                \sin\theta       &amp; \cos\theta  &amp; t_y  \\
+                0        &amp; 0   &amp; 1  
+            \end{bmatrix*}$$</span></p>
+<p>or</p>
+<p>   <span class="math display">$$\begin{bmatrix*}[r]
+                \textbf{\textit{R}}&amp; \textbf{\textit{t}} \\
+                \textbf{0}^T       &amp; 1 
+            \end{bmatrix*}$$</span></p>
+<p>or</p>
+<p><span class="math display">$$[ \ \textbf{\textit{R}} \ | \ \textbf{\textit{t}} \ ]_{2\times3}$$</span></p>
+<h2 id="similarity">Similarity</h2>
+<p>The matrix for this is</p>
+<p>   <span class="math display">$$\begin{bmatrix*}[r]
+                s \cos\theta      &amp; -s \sin\theta  &amp; t_x \\
+                s \sin\theta       &amp; s \cos\theta  &amp; t_y  \\
+                0        &amp; 0   &amp; 1  
+            \end{bmatrix*}$$</span></p>
+<p>or</p>
+<p>   <span class="math display">$$\begin{bmatrix*}[r]
+                s\textbf{\textit{R}}&amp; \textbf{\textit{t}} \\
+                \textbf{0}^T       &amp; 1 
+            \end{bmatrix*}$$</span></p>
+<p>or</p>
+<p><span class="math display">$$[ \ s\textbf{\textit{R}} \ | \ \textbf{\textit{t}} \ ]_{2\times3}$$</span></p>
+<p>Where <span class="math inline"><em>s</em></span> is the scale factor.</p>
+<h2 id="affine">Affine</h2>
+<p>The matrix for this is</p>
+<p>   <span class="math display">$$\begin{bmatrix*}[r]
+               a_{11}     &amp; a_{12}  &amp; t_x \\
+                a_{21}       &amp; a_{22}  &amp; t_y  \\
+                0        &amp; 0   &amp; 1  
+            \end{bmatrix*}$$</span></p>
+<p>or</p>
+<p>   <span class="math display">$$\begin{bmatrix*}[r]
+                \textbf{\textit{A}}&amp; \textbf{\textit{t}} \\
+                \textbf{0}^T       &amp; 1 
+            \end{bmatrix*}$$</span></p>
+<p>or</p>
+<p><span class="math display">$$[ \ \textbf{\textit{A}} \ \textbf{\textit{t}} \ ]_{2\times3}$$</span></p>
+<p>Where <span class="math inline"><em>s</em></span> is the scale factor. Using Singular Value Decomposition <span class="math inline">$\textbf{\textit{A}}$</span> can be broken down into <span class="math inline">$\textbf{\textit{A}} = \textbf{\textit{R}}(\theta)\textbf{\textit{R}}(-\phi)\textbf{\textit{D}}\textbf{\textit{R}}(\phi)$</span> where <span class="math display">$$D= \begin{bmatrix*}[r]
+               \lambda_1    &amp; 0  \\
+                0       &amp; \lambda_2 
+            \end{bmatrix*}$$</span> In words, rotate (<span class="math inline"><em>ϕ</em></span>) so as to line up it’s Eigen vectors with the x-y axis. Scale it by the <span class="math inline"><em>λ</em><sub>1</sub></span> in the x direction and by <span class="math inline"><em>λ</em><sub>1</sub></span> in the y direction. Now rotate it back (<span class="math inline"> − <em>ϕ</em></span>) to the original angle and then rotate to the desired angle (<span class="math inline"><em>θ</em></span>).</p>
+<h2 id="projective">Projective</h2>
+<p>The matrix for this is</p>
+<p>   <span class="math display">$$\begin{bmatrix*}[r]
+               h_{11}     &amp; h_{12}  &amp; h_{13} \\
+               h_{21}     &amp; h_{22}  &amp; h_{23}  \\
+               h_{31}     &amp; h_{32}  &amp; h_{33}      
+            \end{bmatrix*}$$</span></p>
+<p>or</p>
+<p><span class="math display">$$[ \ \textbf{\textit{H}}  \ ]_{3\times3}$$</span></p>
+<h2 id="going-forwards-or-backwards">Going forwards or backwards?</h2>
+<p>It seems to make sense that whatever our transformation, we would take each input pixel coordinate, transform it with the matrix to find it’s destination in the new image and transfer the brightness to there. This has problems though. Due to quantization and other effects we are not guaranteed to fill every position in the new image. This can leave gaps. The better plan is to start with a coordinate in the output image. Determine where its pixel should be coming from in the input image and copy that over. This way we get no gaps.<br />
+To calculate where an output pixel comes from in the input image you must calculate the inverse of the matrix and multiply that by the output coordinate vector and this will give you the input coordinate vector.<br />
+</p>
+</body>
+</html>
